@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
 	char ciphertext[256] = "";
   	char func[256]="";
   	char sample[] = "thisissampleplaintext";
+	int pad = 0;
 
       if(argc==4) {
 	sscanf(argv[1],"%s",plaintext);
@@ -77,6 +78,11 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  if(strcmp(func,"encrypt")==0 && strcmp(key,"1TP")==0) {
+    *key=*makePad(key,strlen(plaintext));
+    pad=1;
+  }
+
   if(strcmp(func,"encrypt")==0) {
     printf("We are going to %s... \nplaintext: %s, key: %s (YOUR INPUT)\n",func,plaintext,key);
   }
@@ -93,9 +99,12 @@ int main(int argc, char *argv[]) {
         plaintext[i]=sample[i];
       }
       *key=*makePad(key,strlen(plaintext));
-      printf("\nInvalid inputs. Using Sample Plaintext and One-Time Pad. Copy the one-time pad if you want to decrypt.");
+      printf("\nInvalid inputs. Using Sample Plaintext and One-Time Pad. Copy the one-time pad if you want to decrypt.\n");
     }
       printf("\nplaintext: %s, key: %s (EDITED INPUT)\n",plaintext,key);
+      if(pad==1) {
+	printf("Using One-Time Pad. Copy the one-time pad if you want to decrypt.\n");
+      }
   }
   else if (strcmp(func,"decrypt")==0) {
     printf("ciphertext: %s, key: %s (EDITED INPUT)\n",plaintext,key);
